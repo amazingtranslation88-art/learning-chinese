@@ -7,11 +7,11 @@ import { GoogleGenAI } from '@google/genai';
 dotenv.config();
 
 // Ensure Vite accepts all AI Studio and custom subdomains
-process.env.__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS = 'vuihoctiengtrungcungmslien.ai.studio,.ai.studio,.run.app';
+process.env.__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS = 'vuihoctiengtrungcungmslien.ai.studio,.ai.studio,.run.app,.onrender.com,vuihoctiengtrungcungmslien.onrender.com';
 
 // In AI Studio and Docker container, nginx listens on 8080 and proxies to 3000. Dev server must run on port 3000.
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));

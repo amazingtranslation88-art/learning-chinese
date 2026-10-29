@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: vuihoctiengtrungcungmslien
+    runtime: node
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production

@@ -1,0 +1,6 @@
+{
+  "name": "VUI HỌC TIẾNG TRUNG CÙNG MS.LIÊN",
+  "description": "Kho học liệu số môn Tiếng Trung chuẩn GDPT mới (Lớp 1-9), YCT (1-6) và HSK (1-3) phiên bản 3.0 mới nhất. Học vui nhộn, trò chơi tương tác, phát âm chuẩn và tài liệu phong phú.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

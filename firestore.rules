@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidMaterial(data) {
+      return data.keys().hasAll(['title', 'grade', 'type', 'url', 'authorName']) &&
+        data.title is string && data.title.size() <= 500 &&
+        data.grade is string && data.grade.size() <= 100 &&
+        data.type in ['pptx', 'pdf', 'word', 'image', 'video', 'drive', 'youtube', 'web', 'ppt', 'doc', 'docx'] &&
+        data.url is string && data.url.size() <= 100000 &&
+        data.authorName is string && data.authorName.size() <= 200;
+    }
+
+    function isValidAccount(data) {
+      return data.keys().hasAll(['name', 'role']) &&
+        data.name is string && data.name.size() <= 100 &&
+        data.role in ['student', 'teacher', 'admin'];
+    }
+
+    // Materials Collection: Read and shared across all devices and logins
+    match /materials/{materialId} {
+      allow read: if true;
+      allow create: if isValidId(materialId) && isValidMaterial(incoming());
+      allow update: if isValidId(materialId) && isValidMaterial(incoming());
+      allow delete: if isValidId(materialId);
+    }
+
+    // Accounts Collection: Synced across phone and gmail logins
+    match /accounts/{accountId} {
+      allow read: if true;
+      allow create: if isValidId(accountId) && isValidAccount(incoming());
+      allow update: if isValidId(accountId) && isValidAccount(incoming());
+      allow delete: if isValidId(accountId);
+    }
+
+    // Settings Collection: Banner and theme configurations
+    match /settings/{settingId} {
+      allow read, write: if true;
+    }
+
+    // Health check test connection document
+    match /test/{docId} {
+      allow read: if true;
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "material": {
+      "title": "LectureMaterial",
+      "description": "Educational lecture materials including PPTX, PDF, Video, and Drive links",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 300 },
+        "grade": { "type": "string", "maxLength": 50 },
+        "unit": { "type": "string", "maxLength": 100 },
+        "authorName": { "type": "string", "maxLength": 200 },
+        "authorEmail": { "type": "string", "maxLength": 100 },
+        "type": { "type": "string", "enum": ["pptx", "pdf", "word", "image", "video", "drive", "youtube", "web", "ppt", "doc", "docx"] },
+        "url": { "type": "string", "maxLength": 100000 },
+        "thumbnail": { "type": "string", "maxLength": 10000 },
+        "description": { "type": "string", "maxLength": 5000 },
+        "views": { "type": "number" },
+        "downloads": { "type": "number" },
+        "ratings": { "type": "array" },
+        "comments": { "type": "array" },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "isOfficial": { "type": "boolean" },
+        "vocabularyItems": { "type": "array" }
+      },
+      "required": ["title", "grade", "type", "url", "authorName"]
+    },
+    "account": {
+      "title": "RegisteredAccount",
+      "description": "User account registered with phone number or Gmail",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "email": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["student", "teacher", "admin"] },
+        "grade": { "type": "string", "maxLength": 50 },
+        "school": { "type": "string", "maxLength": 150 },
+        "avatar": { "type": "string", "maxLength": 20 },
+        "xp": { "type": "number" },
+        "level": { "type": "number" },
+        "streak": { "type": "number" },
+        "gems": { "type": "number" },
+        "badges": { "type": "array" },
+        "registeredDate": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["name", "role"]
+    }
+  },
+  "firestore": {
+    "/materials/{materialId}": {
+      "schema": { "$ref": "#/entities/material" },
+      "description": "Collection of learning materials accessible to all registered students and teachers"
+    },
+    "/accounts/{accountId}": {
+      "schema": { "$ref": "#/entities/account" },
+      "description": "Collection of registered user accounts identified by phone or gmail"
+    }
+  }
+}
